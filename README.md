@@ -5,6 +5,8 @@
 
 This demo project provides a tutorial on getting started with WunderGraph ConnectRPC.
 
+* [Overview](#overview)
+* [Who is this for?](#who-this-is-for)
 * [0. Pre Requisites](#0-pre-requisites)
 * [1. Operations to Proto](#1-operations-to-proto)
 * [2. ConnectRPC Server](#2-connectrpc-server)
@@ -16,11 +18,22 @@ This demo project provides a tutorial on getting started with WunderGraph Connec
 ## Overview
 
 This demo shows how to expose an existing GraphQL API in Cosmo as a ConnectRPC Service, without rewriting resolvers or changing your underlying Graph.
+
 By compiling **Trusted Documents** into a strongly typed RPC interface, Cosmo acts as a translation layer enabling different API Consumers to interact with the Graph using the protocol and tooling which fits them best.
 
 The goal is to reduce friction between API producers and API consumers. Platform and API teams can continue to design, evolve and govern their APIs in GraphQL, while consumers gain access through **strongly typed SDKs**, **OpenAPI**, **gRPC** - without the need to understand or adopt GraphQL themselves.
 
-This demo walks through generating a ConnectRPC service from GraphQL operations, running it on the Cosmo Router and consuming it using standard tooling.
+**By the end of this demo, you will have:**
+
+- Taken an existing federated GraphQL API running in Cosmo
+- Defined trusted GraphQL operations as stable API contracts
+- Generated a strongly typed ConnectRPC service from those operations
+- Served that service using the Cosmo Router
+- Consumed the same API via:
+  - curl (HTTP/JSON)
+  - grpcurl (gRPC)
+  - Generated TypeScript and Go SDKs
+  - An OpenAPI specification
 
 ## Who this is for
 
@@ -515,20 +528,12 @@ func main() {
 }
 ```
 
-#### Benefits of Generated SDKs
-
-* **Type Safety**: Compile-time type checking prevents runtime errors
-* **IDE Support**: Full autocomplete and inline documentation
-* **Consistency**: Same API contract across all languages
-* **Maintainability**: Regenerate SDKs automatically when proto files change
-* **Developer Experience**: No manual HTTP client code or JSON parsing required
-
 #### Updating SDKs
 
 Whenever you modify your GraphQL operations or regenerate your proto files, simply run:
 
 ```shell
-buf generate --path services/service.proto
+buf generate
 ```
 
 This ensures your SDKs stay in sync with your API contract.
