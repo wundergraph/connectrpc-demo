@@ -349,7 +349,7 @@ UpdateEmployeeMood (POST)
 curl -X POST http://localhost:5026/employees.v1.HrService/UpdateEmployeeMood \
     -H "Content-Type: application/json" \
     -H "Connect-Protocol-Version: 1" \
-    -d '{"id": 1, "mood": "HAPPY"}'
+    -d '{"id": 1, "mood": "MOOD_HAPPY"}'
 ```
 
 ### 3b. `grpcurl`
@@ -376,7 +376,7 @@ UpdateEmployeeMood
 ```shell
 grpcurl -plaintext \
   -proto ./services/service.proto \
-  -d '{"id": 1, "mood": "HAPPY"}' \
+  -d '{"id": 1, "mood": "MOOD_HAPPY"}' \
   localhost:5026 \
   employees.v1.HrService/UpdateEmployeeMood
 ```
