@@ -1,4 +1,7 @@
 # ConnectRPC Demo
+### From GraphQL to OpenAPI and Typed SDKs
+
+---
 
 This demo project provides a tutorial on getting started with WunderGraph ConnectRPC.
 
@@ -10,6 +13,36 @@ This demo project provides a tutorial on getting started with WunderGraph Connec
   * [3b. grpcurl](#3b-grpcurl)
   * [3c. Generating OpenAPI](#3c-generating-openapi)
   * [3d. Generating Client SDKs](#3d-generating-client-sdks)
+
+## Overview
+
+This demo shows how to expose an existing GraphQL API in Cosmo as a ConnectRPC Service, without rewriting resolvers or changing your underlying Graph.
+By compiling **Trusted Documents** into a strongly typed RPC interface, Cosmo acts as a translation layer enabling different API Consumers to interact with the Graph using the protocol and tooling which fits them best.
+
+The goal is to reduce friction between API producers and API consumers. Platform and API teams can continue to design, evolve and govern their APIs in GraphQL, while consumers gain access through **strongly typed SDKs**, **OpenAPI**, **gRPC** - without the need to understand or adopt GraphQL themselves.
+
+This demo walks through generating a ConnectRPC service from GraphQL operations, running it on the Cosmo Router and consuming it using standard tooling.
+
+## Who this is for
+
+This demo is intended for users who already have a **monolithic or federated graph running in Cosmo** and want to expose it via ConnectRPC.
+
+It is especially relevant for the following roles:
+
+### API Producers
+
+Teams building and evolving GraphQL schemas who want to:
+
+* Expose APIs to non-GraphQL consumers safely via trusted operations
+* Avoid maintaining multiple API implementations for the same domain
+
+### API Consumers
+
+Teams consuming APIs who want to:
+
+* Use strongly typed SDKs, OpenAPI, or RPC-style APIs
+* Integrate with familiar tooling and workflows
+* Gain value from GraphQL-backed services without needing to learn GraphQL
 
 ## 0. Pre Requisites
 
@@ -33,7 +66,7 @@ We need to author *Named Operations* (also known as *Trusted Documents*), and sa
 
 Feel free to create your own operations, we have prepared three for you below to copy into your terminal.
 
-The operation name will map to an rpc method in the generated proto. So it's a good to think about the job-to-be-done or action of the rpc. 
+The operation name will map to an rpc method in the generated proto. So it's good to think about the job-to-be-done or action of the rpc. 
 
 ```shell
 cat << 'EOF' > services/GetEmployeeById.graphql
@@ -94,7 +127,7 @@ mutation UpdateEmployeeMood($employeeID: Int!, $mood: Mood!) {
 EOF
 ```
 
-Once we have ouf collection of operations, in the services directory, we then need to use the wgc cli tool to compile the schema and operations into a proto.
+Once we have our collection of operations, in the services directory, we then need to use the wgc cli tool to compile the schema and operations into a proto.
 
 ```shell
 wgc grpc-service generate \
@@ -277,4 +310,3 @@ TODO
 ### 3d. Generating Client SDKs
 
 TODO
-
