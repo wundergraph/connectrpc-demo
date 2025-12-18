@@ -1,0 +1,24 @@
+version: v2
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/wundergraph/connectrpc-demo/gen/go
+plugins:
+  # Go SDK
+  - local: protoc-gen-go
+    out: gen/go
+    opt: paths=source_relative
+  - local: protoc-gen-connect-go
+    out: gen/go
+    opt: paths=source_relative
+  # TypeScript SDK
+  - local: ./node_modules/.bin/protoc-gen-es
+    out: gen/ts
+    opt: target=ts
+  - local: ./node_modules/.bin/protoc-gen-connect-es
+    out: gen/ts
+    opt: target=ts
+  # OpenAPI
+  - local: protoc-gen-connect-openapi
+    out: gen/openapi

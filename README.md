@@ -11,8 +11,7 @@ This demo project provides a tutorial on getting started with WunderGraph Connec
 * [3. Consuming the API](#3-consuming-the-api)
   * [3a. curl](#3a-curl)
   * [3b. grpcurl](#3b-grpcurl)
-  * [3c. Generating OpenAPI](#3c-generating-openapi)
-  * [3d. Generating Client SDKs](#3d-generating-client-sdks)
+  * [3c. Generating SDKs and OpenAPI specs](#3c-generating-sdks-and-openapi-specs)
 
 ## Overview
 
@@ -369,10 +368,167 @@ grpcurl -plaintext \
   employees.v1.HrService/UpdateEmployeeMood
 ```
 
-### 3c. Generating OpenAPI
+### 3c. Generating SDKs and OpenAPI specs
 
-TODO
+To generate OpenAPI specifications and client SDKs from your proto files, you'll use [Buf](https://buf.build), a modern tool for working with Protocol Buffers. Buf provides a streamlined way to generate code and documentation from proto files, supporting multiple output formats including OpenAPI specs, TypeScript SDKs, and Go SDKs.
 
-### 3d. Generating Client SDKs
+#### Prerequisites
 
-TODO
+It is possible to use remote plugins, but these can come with rate-limits, so for the purposes of this demo, we will use local tools to achieve the same.
+
+Install the required tools:
+
+```shell
+# Install Buf CLI
+brew install bufbuild/buf/buf
+
+# Install Go plugins for Go SDK generation
+go install connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+
+# Install TypeScript/JavaScript plugins for TypeScript SDK generation
+npm install --save-dev @bufbuild/protoc-gen-es @connectrpc/protoc-gen-connect-es
+
+# Install OpenAPI plugin
+go install connectrpc.com/connect/cmd/protoc-gen-connect-openapi@latest
+```
+
+Ensure the Go bin directory is in your PATH:
+```shell
+export PATH="$PATH:$(go env GOPATH)/bin"
+```
+
+#### Configuration
+
+This project includes two Buf configuration files:
+
+**[`buf.yaml`](buf.yaml)** - Configures the Buf module:
+* Defines the module name and path
+* Excludes `node_modules` from processing
+* Enables standard linting rules to ensure proto file quality
+* Configures breaking change detection to maintain API compatibility
+
+**[`buf.gen.yaml`](buf.gen.yaml)** - Configures code generation:
+* **Managed mode**: Automatically manages Go package paths
+* **Go SDK plugins**: Generates Go client and server stubs using `protoc-gen-go` and `protoc-gen-connect-go`
+* **TypeScript SDK plugins**: Generates TypeScript client code using `protoc-gen-es` and `protoc-gen-connect-es`
+* **OpenAPI plugin**: Generates OpenAPI specification using `protoc-gen-connect-openapi`
+* All outputs are organized into the `gen/` directory by type
+
+#### Generate SDKs and OpenAPI
+
+Generate TypeScript SDK, Go SDK, and OpenAPI specification with a single command:
+
+```shell
+buf generate
+```
+
+Buf will automatically discover the proto files in your module (as configured in [`buf.yaml`](buf.yaml)) and generate all outputs according to the plugins defined in [`buf.gen.yaml`](buf.gen.yaml).
+
+This will create:
+* **Go SDK**: `gen/go/` - Go client and server stubs
+* **TypeScript SDK**: `gen/ts/` - TypeScript client code
+* **OpenAPI**: `gen/openapi/` - OpenAPI specification
+
+The generated OpenAPI spec describes all your RPC methods as HTTP endpoints, making it easy to:
+* Import into API documentation tools (Swagger UI, Redoc, etc.)
+* Generate client SDKs in various languages
+* Share API contracts with external teams
+* Test APIs using OpenAPI-compatible tools
+
+You can view the generated OpenAPI specification:
+
+```shell
+cat gen/openapi/service.openapi.yaml
+```
+
+#### Using the Generated SDKs
+
+##### TypeScript SDK
+
+Install the required runtime dependencies:
+
+```shell
+npm install @connectrpc/connect @connectrpc/connect-web
+```
+
+Example usage:
+
+```typescript
+import { createPromiseClient } from "@connectrpc/connect";
+import { createConnectTransport } from "@connectrpc/connect-web";
+import { HrService } from "./gen/ts/service_connect";
+
+// Create a transport
+const transport = createConnectTransport({
+  baseUrl: "http://localhost:5026",
+});
+
+// Create a client
+const client = createPromiseClient(HrService, transport);
+
+// Call the API
+const response = await client.getEmployeeById({ id: 1 });
+console.log(response.employee);
+```
+
+##### Go SDK
+
+Install the required runtime dependencies:
+
+```shell
+go get connectrpc.com/connect
+```
+
+Example usage:
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+    "net/http"
+
+    "connectrpc.com/connect"
+    employeesv1 "github.com/wundergraph/connectrpc-demo/gen/go/employees/v1"
+    "github.com/wundergraph/connectrpc-demo/gen/go/employees/v1/employeesv1connect"
+)
+
+func main() {
+    client := employeesv1connect.NewHrServiceClient(
+        http.DefaultClient,
+        "http://localhost:5026",
+    )
+
+    req := connect.NewRequest(&employeesv1.GetEmployeeByIdRequest{
+        Id: 1,
+    })
+
+    res, err := client.GetEmployeeById(context.Background(), req)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Printf("Employee: %+v\n", res.Msg.Employee)
+}
+```
+
+#### Benefits of Generated SDKs
+
+* **Type Safety**: Compile-time type checking prevents runtime errors
+* **IDE Support**: Full autocomplete and inline documentation
+* **Consistency**: Same API contract across all languages
+* **Maintainability**: Regenerate SDKs automatically when proto files change
+* **Developer Experience**: No manual HTTP client code or JSON parsing required
+
+#### Updating SDKs
+
+Whenever you modify your GraphQL operations or regenerate your proto files, simply run:
+
+```shell
+buf generate --path services/service.proto
+```
+
+This ensures your SDKs stay in sync with your API contract.
