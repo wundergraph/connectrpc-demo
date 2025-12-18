@@ -2,6 +2,15 @@
 
 This demo project provides a tutorial on getting started with WunderGraph ConnectRPC.
 
+* [0. Pre Requisites](#0-pre-requisites)
+* [1. Operations to Proto](#1-operations-to-proto)
+* [2. ConnectRPC Server](#2-connectrpc-server)
+* [3. Consuming the API](#3-consuming-the-api)
+  * [3a. curl](#3a-curl)
+  * [3b. grpcurl](#3b-grpcurl)
+  * [3c. Generating OpenAPI](#3c-generating-openapi)
+  * [3d. Generating Client SDKs](#3d-generating-client-sdks)
+
 ## 0. Pre Requisites
 
 For this project, we will assume that you have already onboarded onto Cosmo, and have the demo subgraphs and federated graph up and running
@@ -242,4 +251,23 @@ Inspecting the router logs, we should see:
 TODO
 ```
 
+## 3. Consuming the API
+
+TODO
+
+### 3a. curl
+
+TODO
+
+### 3b. grpcurl
+
+TODO
+
+### 3c. Generating OpenAPI
+
+TODO
+
+### 3d. Generating Client SDKs
+
+TODO
 
