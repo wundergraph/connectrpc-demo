@@ -3,7 +3,7 @@ managed:
   enabled: true
   override:
     - file_option: go_package_prefix
-      value: github.com/wundergraph/connectrpc-demo/gen/go
+      value: github.com/wundergraph/connectrpc-tutorial/gen/go
 plugins:
   # Go SDK
   - local: protoc-gen-go

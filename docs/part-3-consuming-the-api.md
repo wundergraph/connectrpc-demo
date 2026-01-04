@@ -268,8 +268,8 @@ import (
     "net/http"
 
     "connectrpc.com/connect"
-    employeesv1 "github.com/wundergraph/connectrpc-demo/gen/go/employees/v1"
-    "github.com/wundergraph/connectrpc-demo/gen/go/employees/v1/employeesv1connect"
+    employeesv1 "github.com/wundergraph/connectrpc-tutorial/gen/go/employees/v1"
+    "github.com/wundergraph/connectrpc-tutorial/gen/go/employees/v1/employeesv1connect"
 )
 
 func main() {
@@ -385,7 +385,7 @@ Congratulations! You've successfully:
 - 📚 [ConnectRPC Documentation](https://connectrpc.com/)
 - 📚 [Buf Documentation](https://buf.build/docs)
 - 💬 [WunderGraph Community](https://wundergraph.com/community)
-- 🐛 [Report an Issue](https://github.com/wundergraph/connectrpc-demo/issues)
+- 🐛 [Report an Issue](https://github.com/wundergraph/connectrpc-tutorial/issues)
 
 ---
 

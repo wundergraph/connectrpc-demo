@@ -1,7 +1,7 @@
 version: v2
 modules:
   - path: .
-    name: buf.build/wundergraph/connectrpc-demo
+    name: buf.build/wundergraph/connectrpc-tutorial
     excludes:
       - node_modules
 lint:

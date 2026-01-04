@@ -176,6 +176,17 @@ wgc --version
 wgc federated-graph fetch demo --namespace development
 ```
 
+## Clone This Repository
+
+To follow along with this tutorial, clone this repository to your local machine:
+
+```shell
+git clone https://github.com/wundergraph/connectrpc-tutorial.git
+cd connectrpc-tutorial
+```
+
+All commands and file paths in this tutorial assume you're working from the root of this repository.
+
 ## What You'll Build
 
 By the end of this tutorial, you will have:
@@ -204,4 +215,4 @@ Ready to begin? Head to [Part 1: Operations to Proto](./docs/part-1-operations-t
 
 - 📚 [Cosmo Documentation](https://cosmo-docs.wundergraph.com/)
 - 💬 [WunderGraph Community](https://wundergraph.com/community)
-- 🐛 [Report an Issue](https://github.com/wundergraph/connectrpc-demo/issues)
+- 🐛 [Report an Issue](https://github.com/wundergraph/connectrpc-tutorial/issues)
