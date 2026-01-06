@@ -1,5 +1,7 @@
 # ConnectRPC Tutorial
-### Learn to Expose GraphQL APIs as Typed RPC Services
+### Learn to Expose GraphQL APIs as Typed gRPC, REST, and Client SDKs
+
+![Header](header.png)
 
 ---
 
